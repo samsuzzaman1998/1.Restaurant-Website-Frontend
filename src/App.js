@@ -16,6 +16,9 @@ import ContactPage from "./pages/ContactPage";
 import DashboardPage from "./pages/DashboardPage";
 import UserProfilePage from "./pages/DashboardPages/UserProfilePage";
 import UserOrderListPage from "./pages/DashboardPages/UserOrderListPage";
+
+import FoodFunToast from "./components/shared/FoodFunToast";
+
 function App() {
     return (
         <>
@@ -34,6 +37,7 @@ function App() {
                 </Route>
             </Routes>
             <Footer />
+            <FoodFunToast />
         </>
     );
 }
