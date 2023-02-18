@@ -1,12 +1,12 @@
-
-import './App.css';
+import "./App.css";
+import Navbar from "./components/shared/Navbar";
 
 function App() {
-  return (
-    <div>
-      connecting
-    </div>
-  );
+    return (
+        <>
+            <Navbar />
+        </>
+    );
 }
 
 export default App;

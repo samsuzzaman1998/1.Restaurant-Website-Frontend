@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Navbar  active link style */
+.foodFunMainMenu.active {
+    color: #003000;
+}
+.foodFunSidebar.active {
+    background-color: #00b769;
+    color: #ffffff;
+}
