@@ -1,5 +1,6 @@
 import React from "react";
 import HomeHero from "../components/nonShared/HomePageCom/HomeHero";
+import PopularFoods from "../components/nonShared/HomePageCom/PopularFoods";
 import WhyChoose from "../components/nonShared/HomePageCom/WhyChoose";
 
 const HomePage = () => {
@@ -7,6 +8,7 @@ const HomePage = () => {
         <div>
             <HomeHero />
             <WhyChoose />
+            <PopularFoods />
         </div>
     );
 };
