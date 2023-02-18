@@ -1,7 +1,12 @@
 import React from "react";
+import HomeHero from "../components/nonShared/HomePageCom/HomeHero";
 
 const HomePage = () => {
-    return <div>this is homepage</div>;
+    return (
+        <div>
+            <HomeHero />
+        </div>
+    );
 };
 
 export default HomePage;
