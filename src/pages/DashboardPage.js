@@ -1,7 +1,12 @@
 import React from "react";
+import Sidebar from "../components/nonShared/DashboardPageCom/Sidebar";
 
 const DashboardPage = () => {
-    return <div>dashboard page</div>;
+    return (
+        <div>
+            <Sidebar />
+        </div>
+    );
 };
 
 export default DashboardPage;
