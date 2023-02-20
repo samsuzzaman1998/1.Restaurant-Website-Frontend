@@ -46,7 +46,7 @@ const ChangePassword = () => {
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Old Password"
                                     id="oldPassword"
-                                    className="w-full px-2 py-1 text-green-500 border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1 "
+                                    className="w-full px-2 py-1 text-green-500 border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 sm:text-[14px] text-[11px] mt-1 "
                                     {...register("oldPassword", {
                                         required: "enter old password",
                                         minLength: {
@@ -93,7 +93,7 @@ const ChangePassword = () => {
                                     type={showPassword ? "text" : "password"}
                                     placeholder="New Password"
                                     id="newPassword"
-                                    className="w-full px-2 py-1 text-green-500 border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1 "
+                                    className="w-full px-2 py-1 text-green-500 border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[11px] sm:text-[14px] mt-1 "
                                     {...register("newPassword", {
                                         required: "enter a new password",
                                         minLength: {
@@ -134,7 +134,7 @@ const ChangePassword = () => {
                         </div>
                     </div>
                     <button
-                        className="bg-red bg-opacity-90 text-white px-4 rounded-3xl py-1 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:text-green-500 mt-2"
+                        className="bg-red text-white px-4 rounded-3xl py-1 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:bg-opacity-90 mt-2"
                         type="submit"
                     >
                         reset
