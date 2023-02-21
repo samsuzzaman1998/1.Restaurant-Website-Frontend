@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     AiOutlineEye,
     AiOutlineEyeInvisible,
@@ -9,19 +9,79 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import profile from "../../../assets/M1.png";
+import { async } from "@firebase/util";
+import axios from "axios";
 
 const UpdateProfileCard = ({ currentUser }) => {
+    const { name, email, contact, location, avatar, role } = currentUser;
+    const [avatarError, setAvatarError] = useState(false);
+    const [prevAvatar, setPrevAvatar] = useState(avatar);
+    const [avatarLoading, setAvatarLoading] = useState(false);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
 
-    const onSubmit = (data) => {
-        const { email, password } = data;
+    const onSubmit = async (data) => {
+        const { location, contact, username, avatarURL } = data;
 
-        console.log(data);
-        //{email: 'demo@gmail.com', password: 'asdghjkvA@1'}
+        // file size and updoading
+        const avatarFile = avatarURL[0];
+        if (avatarFile?.name) {
+            if (avatarFile.size > 20 && avatarFile.size < 200000) {
+                setAvatarError(false);
+                setAvatarLoading(true);
+                const data = new FormData();
+                data.append("file", avatarFile);
+                data.append("upload_preset", "jt5livno");
+
+                // sending image
+                const res = await fetch(
+                    "https://api.cloudinary.com/v1_1/ddaum19rz/image/upload",
+                    {
+                        method: "POST",
+                        body: data,
+                    }
+                );
+                const result = await res.json();
+                setPrevAvatar(result?.secure_url);
+                setAvatarLoading(false);
+            } else {
+                setAvatarError(true);
+            }
+        }
+
+        // final update user
+        const updateInfo = {
+            name: username || name,
+            email,
+            contact: contact,
+            location: location,
+            avatar: prevAvatar,
+            role,
+        };
+
+        try {
+            const token = localStorage.getItem("access-token");
+            const config = {
+                headers: { authorization: `Bearer ${token}` },
+            };
+            const response = await axios.put(
+                "http://localhost:3001/api/v1/user/update-user",
+                updateInfo,
+                config
+            );
+            if (response?.data?.status) {
+                toast.success("Profile Updated");
+            }
+            reset();
+        } catch (error) {
+            console.log(error);
+            !error?.response?.data?.success && toast.error("Failed to update");
+        }
     };
     return (
         <section className="flex justify-center mb-20 w-full max-w-[700px] mx-auto">
@@ -31,11 +91,18 @@ const UpdateProfileCard = ({ currentUser }) => {
                 </label>
 
                 <div className="">
-                    <img
-                        src={profile}
-                        alt="avatar"
-                        className="w-full max-w-[200px] h-full rounded-sm mx-auto"
-                    />
+                    {/* preview */}
+                    {avatarLoading ? (
+                        <div className="w-full max-w-[150px] h-full rounded-full mx-auto text-center text-lg font-semibold text-white">
+                            Loading...
+                        </div>
+                    ) : (
+                        <img
+                            src={prevAvatar}
+                            alt="avatar"
+                            className="w-full max-w-[150px] h-full rounded-full mx-auto"
+                        />
+                    )}
 
                     <form onSubmit={handleSubmit(onSubmit)} className="mt-12">
                         {/* Avatar */}
@@ -61,6 +128,11 @@ const UpdateProfileCard = ({ currentUser }) => {
                                     Maximum 2MB
                                 </p>
                             </div>
+                            {avatarError && (
+                                <p className="text-left text-xs capitalize mt-2 text-gray font-semibold">
+                                    Notice: Enter proper sized file
+                                </p>
+                            )}
                         </div>
                         {/* Name */}
                         <div className="w-full max-w-md mx-auto mt-4">
@@ -76,6 +148,7 @@ const UpdateProfileCard = ({ currentUser }) => {
                                 id="username"
                                 className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1"
                                 {...register("username")}
+                                defaultValue={name}
                             />
                         </div>
                         {/* Email */}
@@ -90,10 +163,10 @@ const UpdateProfileCard = ({ currentUser }) => {
                                 type="text"
                                 placeholder="Your email"
                                 id="email"
-                                className="w-full px-2 py-1  capitalize border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1 "
+                                className="w-full px-2 py-1  border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1 "
                                 {...register("email")}
                                 disabled
-                                value="demo value"
+                                defaultValue={email}
                             />
                         </div>
                         {/* Role */}
@@ -111,7 +184,7 @@ const UpdateProfileCard = ({ currentUser }) => {
                                 className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1"
                                 {...register("role")}
                                 disabled
-                                value="demo value"
+                                defaultValue={role}
                             />
                         </div>
                         {/* Contact */}
@@ -128,6 +201,7 @@ const UpdateProfileCard = ({ currentUser }) => {
                                 id="contact"
                                 className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1"
                                 {...register("contact")}
+                                defaultValue={contact}
                             />
                         </div>
                         {/* Location */}
@@ -144,6 +218,7 @@ const UpdateProfileCard = ({ currentUser }) => {
                                 id="contact"
                                 className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none  transition-all duration-200 text-[14px] mt-1"
                                 {...register("location")}
+                                defaultValue={location}
                             />
                         </div>
                         <div className="flex justify-center mt-3">
