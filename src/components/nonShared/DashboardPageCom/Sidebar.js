@@ -6,7 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 const Sidebar = () => {
     return (
         <section className="sidebar">
-            <div className="drawer drawer-mobile">
+            <div className="drawer drawer-mobile h-full !max-h-full">
                 <input
                     id="dashboardDrawer"
                     type="checkbox"
@@ -30,7 +30,7 @@ const Sidebar = () => {
                         <Outlet />
                     </div>
                 </div>
-                <div className="drawer-side">
+                <div className="drawer-side h-full !max-h-full">
                     <label
                         htmlFor="dashboardDrawer"
                         className="drawer-overlay"

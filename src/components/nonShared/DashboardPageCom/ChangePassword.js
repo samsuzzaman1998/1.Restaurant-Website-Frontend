@@ -24,7 +24,7 @@ const ChangePassword = () => {
         //{email: 'demo@gmail.com', password: 'asdghjkvA@1'}
     };
     return (
-        <section className=" w-full max-w-[500px]">
+        <section className=" w-full max-w-[500px] mx-auto">
             <div className="w-full shadow-2xl rounded py-2 px-[8px] sm:pt-1 sm:pb-3 sm:px-4 bg-gradient-to-r from-green-200 to-green-100 relative">
                 <label className="capitalize text-[10px] md:text-xs tracking-wide text-white bg-black bg-opacity-90 px-1 sm:px-3 py-[1px] rounded absolute top-[-10px] left-[5px]">
                     change password

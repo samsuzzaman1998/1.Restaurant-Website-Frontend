@@ -8,6 +8,7 @@ import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const SignupPage = () => {
     const [terms, setTerms] = useState(false);
@@ -17,15 +18,46 @@ const SignupPage = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const { name, email, password, confirmPassword } = data;
 
         if (password !== confirmPassword) {
-            toast.warn("password not matched");
+            toast.warn("Enter same password");
         } else {
-            console.log(data);
+            if (name && email && password && confirmPassword && terms) {
+                // next step
+                const data = {
+                    name,
+                    email,
+                    password,
+                    terms,
+                };
+                try {
+                    const response = await axios.post(
+                        "http://localhost:3001/api/v1/user/create-user",
+                        data
+                    );
+                    // if (response?.data?.success) {
+                    //     toast.success(response?.data?.message);
+                    // }
+                    console.log(response);
+                    toast.success(response?.data?.message);
+                    const accessToken = response?.data.TOKEN;
+                    localStorage.setItem("access-token", accessToken);
+                    reset();
+                    setTerms(false);
+                } catch (error) {
+                    console.log(error);
+                    console.log(error?.response?.data?.message);
+                    toast.warn(error?.response?.data?.message);
+                    // console.log("error Message", error.message);
+                }
+            } else {
+                toast.warn("Provide all Informations");
+            }
         }
         //{name: 'sams', email: 'demo@gmail.com', password: 'Aa@12345', confirmPassword: 'Aa@12345'}
     };
@@ -37,6 +69,7 @@ const SignupPage = () => {
             </h3>
             <div className="divide-y divide-double divide-gray">
                 <form className="px-4 mb-8" onSubmit={handleSubmit(onSubmit)}>
+                    {/* Name field */}
                     <div className="w-full max-w-md mx-auto ">
                         <label
                             htmlFor="name"
@@ -71,6 +104,7 @@ const SignupPage = () => {
                             </p>
                         )}
                     </div>
+                    {/* email field */}
                     <div className="w-full max-w-md mx-auto mt-4">
                         <label
                             htmlFor="email"
@@ -79,10 +113,10 @@ const SignupPage = () => {
                             your email
                         </label>
                         <input
-                            type="text"
+                            type="email"
                             placeholder="email"
                             id="email"
-                            className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1"
+                            className="w-full px-2 py-1 text-green-500  border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1"
                             {...register("email", {
                                 required: "email is required",
                                 pattern: {
@@ -97,6 +131,7 @@ const SignupPage = () => {
                             </p>
                         )}
                     </div>
+                    {/* password field */}
                     <div className="w-full max-w-md mx-auto mt-4">
                         <label
                             htmlFor="password"
@@ -149,6 +184,7 @@ const SignupPage = () => {
                             </p>
                         )}
                     </div>
+                    {/* confirm password field */}
                     <div className="w-full max-w-md mx-auto mt-4">
                         <label
                             htmlFor="confirmPassword"
@@ -200,13 +236,14 @@ const SignupPage = () => {
                             </p>
                         )}
                     </div>
+                    {/* terms field */}
                     <div className="w-full max-w-md mx-auto mt-4 flex justify-start items-center">
                         <input
                             type="checkbox"
                             id="terms"
                             className="mr-1 border-r-green-100 outline-green-100"
                             checked={terms}
-                            onClick={() => setTerms(!terms)}
+                            onChange={() => setTerms(!terms)}
                         />
                         <label
                             htmlFor="terms"
@@ -215,7 +252,7 @@ const SignupPage = () => {
                             Accept all term's and conditions
                         </label>
                     </div>
-
+                    {/* submit button */}
                     <div className="flex justify-center mt-6">
                         <button
                             className="bg-green-100 border border-green-100 text-white w-full max-w-[150px] rounded-3xl py-2 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:bg-green-200 disabled:bg-gray disabled:text-black disabled:border-gray disabled:opacity-50"
@@ -235,7 +272,7 @@ const SignupPage = () => {
                         </Link>
                     </p>
                 </form>
-
+                {/* social login button */}
                 <div className="flex flex-col-reverse sm:flex-row justify-center items-center mb-4 gap-y-3 sm:gap-y-0 sm:gap-x-4 pt-8 px-4">
                     <button
                         className="bg-gray border border-gray text-black px-4 xs:px-8 rounded-3xl py-2 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:bg-green-200 hover:text-white flex  items-center"

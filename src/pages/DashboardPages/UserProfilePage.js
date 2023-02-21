@@ -5,7 +5,7 @@ import UserProfileCard from "../../components/nonShared/DashboardPageCom/UserPro
 const UserProfilePage = () => {
     return (
         <>
-            <div className="grid grid-cols-1 min-[550px]:grid-cols-2 justify-center items-end gap-x-6 lg:gap-x-8 gap-y-6 min-[550px]:gap-y-0">
+            <div className="grid grid-cols-1 min-[550px]:grid-cols-2 justify-center items-end gap-x-6 lg:gap-x-8 gap-y-6 min-[550px]:gap-y-0 mb-28">
                 <UserProfileCard />
                 <ChangePassword />
             </div>

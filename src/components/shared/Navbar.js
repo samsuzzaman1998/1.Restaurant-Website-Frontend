@@ -1,21 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 // import logo from "../../../assets/logo.png";
+import avatar from "../../assets/M1.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
 import Logo from "./Logo";
 import { Link, NavLink } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { navbarLink } from "../../database/NavbarData";
+import { userContext } from "../../Utils/Context/userContext";
+import useUserToken from "../../Utils/useUserToken";
 
 const Navbar = () => {
     const [showLinks, setShowLinks] = useState(false);
     const linksContainerRef = useRef(null);
     const linksRef = useRef(null);
 
+    // navbar toggle
     const handleToggleBtn = () => {
         setShowLinks(!showLinks);
     };
 
+    // toggle responsive navbar
     useEffect(() => {
         const linksHeight = linksRef.current.getBoundingClientRect().height;
         if (showLinks) {
@@ -24,9 +29,19 @@ const Navbar = () => {
             linksContainerRef.current.style.height = "0px";
         }
     }, [showLinks]);
+
+    const userToken = useUserToken();
+
+    const { user, userError, userLoading, userLogout, handleLoginToken } =
+        useContext(userContext);
+
+    useEffect(() => {
+        handleLoginToken(userToken);
+    }, [user?.email]);
+    console.log(user);
     return (
         <nav className="bg-green-100 sticky top-0 z-50">
-            <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center px-3 xs:px-5 sm:px-8 md:px-8 xl:px-0 py-2 md:py-2 overflow-hidden ">
+            <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center px-3 xs:px-5 sm:px-8 md:px-8 xl:px-0 py-2 md:py-2  overflow-hidden md:overflow-visible ">
                 <div className="flex justify-between items-center ">
                     {/* <img src={logo} alt="brand" /> */}
                     <Logo />
@@ -73,6 +88,41 @@ const Navbar = () => {
                                 </div>
                                 <AiOutlineShoppingCart className="text-white text-2xl" />
                             </Link>
+                        </li>
+                        <li
+                            className=" dropdown dropdown-bottom dropdown-end md:ml-2"
+                            tabIndex={0}
+                        >
+                            <div className="avatar">
+                                <div className=" rounded-full">
+                                    <img
+                                        src={user?.avatar}
+                                        alt="avatar"
+                                        className="w-full max-w-[40px]"
+                                    />
+                                </div>
+                            </div>
+                            <ul
+                                tabIndex={0}
+                                className="dropdown-content menu p-2 shadow bg-green-100 rounded-box w-[150px] hidden md:block"
+                            >
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/profile"
+                                        className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:pt-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
+                                    >
+                                        Profile
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => userLogout()}
+                                        className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:py-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
+                                    >
+                                        log out
+                                    </button>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <Link
