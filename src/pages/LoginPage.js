@@ -5,15 +5,19 @@ import {
     AiOutlineGoogle,
 } from "react-icons/ai";
 import { FaFacebook } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { userContext } from "../Utils/Context/userContext";
+import auth from "../firebase.init";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import Loading from "../components/shared/Loading";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { handleLoginToken } = useContext(userContext);
+    const { user, userError, userLoading, userLogout, handleLoginToken } =
+        useContext(userContext);
     const {
         register,
         handleSubmit,
@@ -21,6 +25,16 @@ const LoginPage = () => {
         reset,
     } = useForm();
 
+    const [signInWithGoogle, gUser, gLoading, gError] =
+        useSignInWithGoogle(auth);
+
+    // For redirection after login
+    let err; // redirect to prev page
+    let navigate = useNavigate();
+    let location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
+    // form submit handler function
     const onSubmit = async (data) => {
         const { email, password } = data;
 
@@ -44,6 +58,19 @@ const LoginPage = () => {
         }
         //{email: 'demo@gmail.com', password: 'asdghjkvA@1'}
     };
+
+    if (gLoading || userLoading) {
+        return <Loading />;
+    }
+
+    if (user?.status || gUser) {
+        navigate(from, { replace: true }); // to navigate that page
+    }
+
+    if (userError || gError) {
+        err = userError?.message || gError?.message;
+        toast.err(err);
+    }
 
     return (
         <section className="w-full max-w-[500px] mx-auto my-10 lg:my-20 pb-6 lg:pb-6 rounded-lg shadow-lg hover:shadow-xl ">
@@ -157,7 +184,10 @@ const LoginPage = () => {
                         <FaFacebook className="text-lg xs:text-xl font-medium mr-[2px]" />
                         <span className="">with facebook</span>
                     </button>
-                    <button className="bg-gray border border-gray text-black px-4 xs:px-8 rounded-3xl py-2 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:bg-green-200 hover:text-white flex  items-center">
+                    <button
+                        onClick={() => signInWithGoogle()}
+                        className="bg-gray border border-gray text-black px-4 xs:px-8 rounded-3xl py-2 text-xs sm:text-sm uppercase tracking-wide font-medium transition-all duration-200 hover:bg-green-200 hover:text-white flex  items-center"
+                    >
                         <AiOutlineGoogle className=" text-lg xs:text-xl font-medium mr-[2px]" />
                         <span className=""> with google</span>
                     </button>

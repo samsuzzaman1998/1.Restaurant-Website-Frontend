@@ -9,11 +9,17 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { navbarLink } from "../../database/NavbarData";
 import { userContext } from "../../Utils/Context/userContext";
 import useUserToken from "../../Utils/useUserToken";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
 
 const Navbar = () => {
     const [showLinks, setShowLinks] = useState(false);
     const linksContainerRef = useRef(null);
     const linksRef = useRef(null);
+    const [gUser, gLoading, gError] = useAuthState(auth); // google user
+    const [signOut, loading, error] = useSignOut(auth);
+    const { user, userError, userLoading, userLogout, handleLoginToken } =
+        useContext(userContext); // custom user
 
     // navbar toggle
     const handleToggleBtn = () => {
@@ -32,13 +38,16 @@ const Navbar = () => {
 
     const userToken = useUserToken();
 
-    const { user, userError, userLoading, userLogout, handleLoginToken } =
-        useContext(userContext);
-
     useEffect(() => {
         handleLoginToken(userToken);
     }, [user?.email]);
-    console.log(user);
+
+    // logout handler
+    const handleLogOut = async () => {
+        user?.email ? userLogout() : await signOut();
+    };
+    console.log(gUser);
+
     return (
         <nav className="bg-green-100 sticky top-0 z-50">
             <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center px-3 xs:px-5 sm:px-8 md:px-8 xl:px-0 py-2 md:py-2  overflow-hidden md:overflow-visible ">
@@ -89,49 +98,55 @@ const Navbar = () => {
                                 <AiOutlineShoppingCart className="text-white text-2xl" />
                             </Link>
                         </li>
-                        <li
-                            className=" dropdown dropdown-bottom dropdown-end md:ml-2"
-                            tabIndex={0}
-                        >
-                            <div className="avatar">
-                                <div className=" rounded-full">
-                                    <img
-                                        src={user?.avatar}
-                                        alt="avatar"
-                                        className="w-full max-w-[40px]"
-                                    />
-                                </div>
-                            </div>
-                            <ul
+                        {(user?.email || gUser) && (
+                            <li
+                                className=" dropdown dropdown-bottom dropdown-end md:ml-2"
                                 tabIndex={0}
-                                className="dropdown-content menu p-2 shadow bg-green-100 rounded-box w-[150px] hidden md:block"
                             >
-                                <li>
-                                    <NavLink
-                                        to="/dashboard/profile"
-                                        className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:pt-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
-                                    >
-                                        Profile
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={() => userLogout()}
-                                        className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:py-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
-                                    >
-                                        log out
-                                    </button>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <Link
-                                to="/signup"
-                                className=" uppercase tracking-wider text-white text-sm border-[1px] border-white rounded-3xl px-4 py-[2px] md:ml-2 mt-2 md:mt-0 transition-all duration-300 hover:bg-white hover:border-green-100 hover:text-green-400 font-medium"
-                            >
-                                sign up
-                            </Link>
-                        </li>
+                                <div className="avatar">
+                                    <div className=" rounded-full">
+                                        <img
+                                            src={
+                                                user?.avatar || gUser?.photoURL
+                                            }
+                                            alt="avatar"
+                                            className="w-full max-w-[40px]"
+                                        />
+                                    </div>
+                                </div>
+                                <ul
+                                    tabIndex={0}
+                                    className="dropdown-content menu p-2 shadow bg-green-100 rounded-box w-[150px] hidden md:block"
+                                >
+                                    <li>
+                                        <NavLink
+                                            to="/dashboard/profile"
+                                            className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:pt-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
+                                        >
+                                            Profile
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={() => handleLogOut()}
+                                            className="uppercase text-sm tracking-wide text-white my-4 md:my-0 md:mx-2 py-2 md:py-2 transition-all duration-300 ease-in hover:text-green-500 foodFunMainMenu bg-transparent"
+                                        >
+                                            log out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        )}
+                        {!user?.status && !gUser && (
+                            <li>
+                                <Link
+                                    to="/signup"
+                                    className=" uppercase tracking-wider text-white text-sm border-[1px] border-white rounded-3xl px-4 py-[2px] md:ml-2 mt-2 md:mt-0 transition-all duration-300 hover:bg-white hover:border-green-100 hover:text-green-400 font-medium"
+                                >
+                                    sign up
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>

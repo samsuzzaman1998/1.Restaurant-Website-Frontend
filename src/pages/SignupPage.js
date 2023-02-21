@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     AiOutlineGoogle,
     AiOutlineEye,
@@ -9,10 +9,12 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { userContext } from "../Utils/Context/userContext";
 
 const SignupPage = () => {
     const [terms, setTerms] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const { handleLoginToken } = useContext(userContext);
 
     const {
         register,
@@ -47,6 +49,7 @@ const SignupPage = () => {
                     toast.success(response?.data?.message);
                     const accessToken = response?.data.TOKEN;
                     localStorage.setItem("access-token", accessToken);
+                    handleLoginToken(accessToken);
                     reset();
                     setTerms(false);
                 } catch (error) {

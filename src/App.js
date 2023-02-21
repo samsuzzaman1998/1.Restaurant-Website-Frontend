@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 // components
 import Footer from "./components/shared/Footer";
 import Navbar from "./components/shared/Navbar";
+import RequireAuth from "./components/shared/RequireAuth";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -31,8 +32,22 @@ function App() {
                 <Route path="order" element={<OrderPage />} />
                 <Route path="signup" element={<SignupPage />} />
                 <Route path="login" element={<LoginPage />} />
-                <Route path="dashboard" element={<DashboardPage />}>
-                    <Route path="profile" element={<UserProfilePage />} />
+                <Route
+                    path="dashboard"
+                    element={
+                        <RequireAuth>
+                            <DashboardPage />
+                        </RequireAuth>
+                    }
+                >
+                    <Route
+                        path="profile"
+                        element={
+                            <RequireAuth>
+                                <UserProfilePage />
+                            </RequireAuth>
+                        }
+                    />
                     <Route path="orderList" element={<UserOrderListPage />} />
                 </Route>
             </Routes>
