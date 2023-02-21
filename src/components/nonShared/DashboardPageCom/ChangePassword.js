@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const ChangePassword = () => {
+const ChangePassword = ({ currentUser }) => {
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,

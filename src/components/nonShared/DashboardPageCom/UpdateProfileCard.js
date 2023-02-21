@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import profile from "../../../assets/M1.png";
 
-const UpdateProfileCard = () => {
+const UpdateProfileCard = ({ currentUser }) => {
     const {
         register,
         handleSubmit,
