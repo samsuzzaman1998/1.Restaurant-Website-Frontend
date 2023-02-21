@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     AiOutlineEye,
     AiOutlineEyeInvisible,
@@ -8,19 +8,40 @@ import { FaFacebook } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { userContext } from "../Utils/Context/userContext";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const { handleLoginToken } = useContext(userContext);
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const { email, password } = data;
 
-        console.log(data);
+        if (email && password) {
+            try {
+                const response = await axios.post(
+                    "http://localhost:3001/api/v1/user/login-user",
+                    data
+                );
+                const accessToken = response.data.TOKEN;
+                localStorage.setItem("access-token", accessToken);
+                handleLoginToken(accessToken);
+                toast.info("Login Successfully");
+                reset();
+            } catch (error) {
+                console.log(error);
+                !error.response.success && toast.error("Login Failed");
+            }
+        } else {
+            toast.warn("Fill all fields");
+        }
         //{email: 'demo@gmail.com', password: 'asdghjkvA@1'}
     };
 
