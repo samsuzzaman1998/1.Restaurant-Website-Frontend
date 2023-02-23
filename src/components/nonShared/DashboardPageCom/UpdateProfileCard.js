@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import profile from "../../../assets/M1.png";
-import { async } from "@firebase/util";
 import axios from "axios";
 
 const UpdateProfileCard = ({ currentUser }) => {

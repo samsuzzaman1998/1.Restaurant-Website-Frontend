@@ -69,7 +69,7 @@ const LoginPage = () => {
 
     if (userError || gError) {
         err = userError?.message || gError?.message;
-        toast.err(err);
+        toast.warn(err);
     }
 
     return (
