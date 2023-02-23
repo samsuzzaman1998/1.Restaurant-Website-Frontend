@@ -35,9 +35,18 @@ const UserProfilePage = () => {
         <>
             <div className="grid grid-cols-1 min-[550px]:grid-cols-2 justify-center items-end gap-x-6 lg:gap-x-8 gap-y-6 min-[550px]:gap-y-0 mb-28">
                 <UserProfileCard currentUser={currentUser} />
-                <ChangePassword currentUser={currentUser} />
+
+                <fieldset
+                    disabled={gUser?.providerId === "firebase" ? true : false}
+                >
+                    <ChangePassword currentUser={currentUser} />
+                </fieldset>
             </div>
-            <UpdateProfileCard currentUser={currentUser} />
+            <fieldset
+                disabled={gUser?.providerId === "firebase" ? true : false}
+            >
+                <UpdateProfileCard currentUser={currentUser} />
+            </fieldset>
         </>
     );
 };

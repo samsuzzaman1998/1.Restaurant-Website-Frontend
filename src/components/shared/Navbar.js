@@ -46,7 +46,6 @@ const Navbar = () => {
     const handleLogOut = async () => {
         user?.email ? userLogout() : await signOut();
     };
-    console.log(gUser);
 
     return (
         <nav className="bg-green-100 sticky top-0 z-50">
