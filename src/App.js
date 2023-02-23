@@ -19,6 +19,7 @@ import UserProfilePage from "./pages/DashboardPages/UserProfilePage";
 import UserOrderListPage from "./pages/DashboardPages/UserOrderListPage";
 
 import FoodFunToast from "./components/shared/FoodFunToast";
+import UserListPage from "./pages/DashboardPages/UserListPage";
 
 function App() {
     return (
@@ -49,6 +50,7 @@ function App() {
                         }
                     />
                     <Route path="orderList" element={<UserOrderListPage />} />
+                    <Route path="userList" element={<UserListPage />} />
                 </Route>
             </Routes>
             <Footer />

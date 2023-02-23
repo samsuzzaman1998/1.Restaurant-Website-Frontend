@@ -11,8 +11,8 @@ export const SidebarMenuData = [
     },
     {
         _id: 3,
-        name: "one",
-        link: "unknown",
+        name: "User list",
+        link: "/dashboard/userList",
     },
     {
         _id: 4,
