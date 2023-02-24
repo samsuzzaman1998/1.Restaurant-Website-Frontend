@@ -1,11 +1,11 @@
-import React from "react";
-import { foodData } from "../database/HomePageData";
+import React, { useContext } from "react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import { OrderContext } from "../Utils/Context/OrderContext";
 
 const OrderPage = () => {
-    const data = foodData.slice(0, 5);
+    const { cart } = useContext(OrderContext);
 
     return (
         <>
@@ -52,7 +52,7 @@ const OrderPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((food) => {
+                            {cart?.map((food) => {
                                 const { title, price, photo } = food;
                                 return (
                                     <tr>
@@ -88,7 +88,7 @@ const OrderPage = () => {
                                             <p className="">1500 TK</p>
                                         </td>
                                         <td className="border-b-[1px] border-gray px-8 py-2 ">
-                                            <RxCross1 className="border-gray border-[1px]  text-green-100 rounded-md  p-[1px] text-2xl cursor-pointer hover:border-green-100 duration-200 font-bold  hover:bg-green-200 hover:text-white" />
+                                            <RxCross1 className="border-gray border-[1px]  text-red rounded-md  p-[1px] text-2xl cursor-pointer hover:border-red duration-200 font-bold  hover:bg-red hover:text-white" />
                                         </td>
                                     </tr>
                                 );
