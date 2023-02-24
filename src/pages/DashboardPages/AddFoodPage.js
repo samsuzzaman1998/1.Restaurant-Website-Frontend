@@ -1,13 +1,15 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import demo from "../../assets/food.png";
 
 const AddFoodPage = () => {
     const [titleLen, setTitleLen] = useState(0);
     const [desLen, setDesLen] = useState(0);
-    const [avatarError, setAvatarError] = useState(false);
+    const [thumbError, setThumbError] = useState(false);
     const [thumbLoading, setThumbLoading] = useState(false);
-    const [prevThumb, setPrevThumb] = useState(demo);
+    const [prevThumb, setPrevThumb] = useState("");
 
     const {
         register,
@@ -16,9 +18,64 @@ const AddFoodPage = () => {
         reset,
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        const { title, description, price, thumbURL } = data;
+
+        // file size and updoading
+        const thumbFile = thumbURL[0];
+        if (thumbFile?.name) {
+            if (thumbFile.size > 2 && thumbFile.size < 4000000) {
+                setThumbError(false);
+                setThumbLoading(true);
+                const data = new FormData();
+                data.append("file", thumbFile);
+                data.append("upload_preset", "jt5livno");
+
+                // sending image
+                const res = await fetch(
+                    "https://api.cloudinary.com/v1_1/ddaum19rz/image/upload",
+                    {
+                        method: "POST",
+                        body: data,
+                    }
+                );
+                const result = await res.json();
+                console.log("result", result?.secure_url);
+                setPrevThumb(result?.secure_url);
+                setThumbLoading(false);
+
+                // Posting Food Object
+                const singleFood = {
+                    title,
+                    description,
+                    price: +price,
+                    thumbnail: result?.secure_url,
+                };
+                try {
+                    // const token = localStorage.getItem("access-token");
+                    // const config = {
+                    //     headers: { authorization: `Bearer ${token}` },
+                    // };
+                    const response = await axios.post(
+                        "http://localhost:3001/api/v1/food/add-food",
+                        singleFood
+                        // config
+                    );
+                    if (response?.data?.status) {
+                        console.log("after success", response);
+                        toast.success("Profile Updated");
+                    }
+                    reset();
+                } catch (error) {
+                    console.log(error);
+                    toast("something went wrong");
+                }
+            } else {
+                setThumbError(true);
+            }
+        }
     };
+
     return (
         <section className="py-8 sm:py-12">
             <h3 className="text-center uppercase font-medium text-green-100 opacity-90 mb-6 lg:mb-8 ">
@@ -95,8 +152,9 @@ const AddFoodPage = () => {
                                         "description be atleast 50 characters",
                                 },
                                 maxLength: {
-                                    value: 30,
-                                    message: "title be max 150 characters",
+                                    value: 150,
+                                    message:
+                                        "description be max 150 characters",
                                 },
                             })}
                             onChange={(e) => setDesLen(e.target.value.length)}
@@ -131,8 +189,8 @@ const AddFoodPage = () => {
                                         "price value be atleast 5 character",
                                 },
                                 maxLength: {
-                                    value: 4,
-                                    message: "price be max 4 character",
+                                    value: 10,
+                                    message: "price be max 10 character",
                                 },
                             })}
                         />
@@ -156,17 +214,17 @@ const AddFoodPage = () => {
                             placeholder="URL"
                             id="avatarURL"
                             className="w-full px-2 py-1 text-black capitalize border border-gray rounded-md outline-none transition-all duration-200 text-[14px] mt-1"
-                            {...register("avatarURL")}
+                            {...register("thumbURL")}
                         />
                         <div className="flex justify-between items-center">
                             <p className="text-center text-xs capitalize mt-2 text-black opacity-70 ">
                                 Minimum 20kb
                             </p>
                             <p className="text-center text-xs capitalize mt-2 text-black opacity-70 ">
-                                Maximum 2MB
+                                Maximum 4MB
                             </p>
                         </div>
-                        {avatarError && (
+                        {thumbError && (
                             <p className="text-left text-xs capitalize mt-2 text-red opacity-70 font-semibold">
                                 Notice: Enter proper sized file
                             </p>
@@ -185,7 +243,7 @@ const AddFoodPage = () => {
                 </form>
                 {/* preview */}
                 {thumbLoading ? (
-                    <div className="w-full max-w-[150px] h-full rounded-full mx-auto text-center text-lg font-semibold text-white">
+                    <div className="w-full max-w-[300px] mx-auto text-center text-lg font-semibold text-white">
                         Loading...
                     </div>
                 ) : (
