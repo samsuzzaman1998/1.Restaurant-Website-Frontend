@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "../../shared/Card";
 import CommonButton from "../../shared/CommonButton";
 import SectionTitle from "../../shared/SecTitle";
 import { foodData } from "../../../database/HomePageData";
 
 const PopularFoods = () => {
+   
+
     const secData = {
         title: "our popular meals",
         subtitle:

@@ -11,6 +11,7 @@ import { userContext } from "../../Utils/Context/userContext";
 import useUserToken from "../../Utils/useUserToken";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
+import { OrderContext } from "../../Utils/Context/OrderContext";
 
 const Navbar = () => {
     const [showLinks, setShowLinks] = useState(false);
@@ -20,6 +21,7 @@ const Navbar = () => {
     const [signOut, loading, error] = useSignOut(auth);
     const { user, userError, userLoading, userLogout, handleLoginToken } =
         useContext(userContext); // custom user
+    const { cart } = useContext(OrderContext);
 
     // navbar toggle
     const handleToggleBtn = () => {
@@ -92,7 +94,7 @@ const Navbar = () => {
                         <li className="flex justify-between items-center mt-[8px] md:mt-0 md:mx-[4px]">
                             <Link to="/order" className="relative inline-block">
                                 <div className="absolute top-[-5px] right-[-4px] text-[10px] font-medium inline-block text-white bg-green-500 px-[4px] rounded-full">
-                                    20
+                                    {cart?.length}
                                 </div>
                                 <AiOutlineShoppingCart className="text-white text-2xl" />
                             </Link>

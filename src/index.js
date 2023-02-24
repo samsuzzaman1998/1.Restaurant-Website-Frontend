@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserContextProviderWrapper } from "./Utils/Context/userContext";
+import { OrderContextPorvider } from "./Utils/Context/OrderContext";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -16,7 +17,9 @@ root.render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <UserContextProviderWrapper>
-                    <App />
+                    <OrderContextPorvider>
+                        <App />
+                    </OrderContextPorvider>
                 </UserContextProviderWrapper>
             </BrowserRouter>
         </QueryClientProvider>
