@@ -20,6 +20,7 @@ import UserOrderListPage from "./pages/DashboardPages/UserOrderListPage";
 
 import FoodFunToast from "./components/shared/FoodFunToast";
 import UserListPage from "./pages/DashboardPages/UserListPage";
+import AddFoodPage from "./pages/DashboardPages/AddFoodPage";
 
 function App() {
     return (
@@ -41,16 +42,10 @@ function App() {
                         </RequireAuth>
                     }
                 >
-                    <Route
-                        path="profile"
-                        element={
-                            <RequireAuth>
-                                <UserProfilePage />
-                            </RequireAuth>
-                        }
-                    />
+                    <Route path="profile" element={<UserProfilePage />} />
                     <Route path="orderList" element={<UserOrderListPage />} />
                     <Route path="userList" element={<UserListPage />} />
+                    <Route path="addFood" element={<AddFoodPage />} />
                 </Route>
             </Routes>
             <Footer />

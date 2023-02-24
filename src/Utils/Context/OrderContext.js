@@ -16,11 +16,18 @@ function OrderContextPorvider({ children }) {
         }
     };
 
-    // To calculate cart value
-    
+    // To update order quantity by food
+    const updateOrderQuantityHandler = (value, foodID) => {
+        console.log("value:", value, "foodID:", foodID);
+    };
 
     // Context Passing Object
-    const value = { cart, setCart, handleAddToCart };
+    const value = {
+        cart,
+        setCart,
+        handleAddToCart,
+        updateOrderQuantityHandler,
+    };
 
     return (
         <OrderContext.Provider value={value}>{children}</OrderContext.Provider>

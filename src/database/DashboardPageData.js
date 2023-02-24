@@ -16,8 +16,8 @@ export const SidebarMenuData = [
     },
     {
         _id: 4,
-        name: "one",
-        link: "unknown",
+        name: "Add food",
+        link: "/dashboard/addFood",
     },
     {
         _id: 5,

@@ -40,7 +40,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 50,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 2,
@@ -48,7 +48,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.Lorem ipsum dolor sit amet consectetur.",
         price: 30,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 3,
@@ -56,7 +56,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 50,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 4,
@@ -64,7 +64,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet consectetur consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 150,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 5,
@@ -72,7 +72,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 40,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 6,
@@ -80,7 +80,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 180,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 7,
@@ -88,7 +88,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 80,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 8,
@@ -96,7 +96,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 120,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 9,
@@ -104,7 +104,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 250,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
     {
         _id: 10,
@@ -112,7 +112,7 @@ export const foodData = [
         des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt earum voluptates, itaque eius eveniet exercitationem.",
         price: 20,
         photo: food,
-        quantity: 1,
+        orderQuantity: 1,
     },
 ];
 
