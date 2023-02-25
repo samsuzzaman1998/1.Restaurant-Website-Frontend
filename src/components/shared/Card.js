@@ -6,7 +6,7 @@ const Card = ({ food }) => {
     const { handleAddToCart } = useContext(OrderContext);
     const [love, setLove] = useState(false);
 
-    const { _id, title, des, price, photo } = food;
+    const { _id, title, description, price, thumbnail } = food;
 
     return (
         <div className="flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-200 rounded pb-4 relative group">
@@ -25,7 +25,7 @@ const Card = ({ food }) => {
             )}
             <div className="rounded-tl rounded-tr text-lg">
                 <img
-                    src={photo}
+                    src={thumbnail}
                     alt="food"
                     className="w-full rounded-tl rounded-tr"
                 />
@@ -35,7 +35,7 @@ const Card = ({ food }) => {
                     {title}
                 </h4>
                 <p className="text-[13px] sm:text-sm text-justify  text-black opacity-90 mt-2">
-                    {des}
+                    {description}
                 </p>
             </div>
             <div className="flex justify-between items-center mt-4 px-4">

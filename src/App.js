@@ -21,6 +21,7 @@ import UserOrderListPage from "./pages/DashboardPages/UserOrderListPage";
 import FoodFunToast from "./components/shared/FoodFunToast";
 import UserListPage from "./pages/DashboardPages/UserListPage";
 import AddFoodPage from "./pages/DashboardPages/AddFoodPage";
+import FoodListPage from "./pages/DashboardPages/FoodListPage";
 
 function App() {
     return (
@@ -46,6 +47,7 @@ function App() {
                     <Route path="orderList" element={<UserOrderListPage />} />
                     <Route path="userList" element={<UserListPage />} />
                     <Route path="addFood" element={<AddFoodPage />} />
+                    <Route path="foodList" element={<FoodListPage />} />
                 </Route>
             </Routes>
             <Footer />

@@ -5,16 +5,14 @@ import { OrderContext } from "../../../Utils/Context/OrderContext";
 
 const SingleFoodRow = ({ food }) => {
     const { cart, updateOrderQuantityHandler } = useContext(OrderContext);
-    const { title, price, photo, orderQuantity } = food;
+    const { title, price, thumbnail, orderQuantity } = food;
 
-    const increaseBtnHandler = (e) => {
-        
-    };
+    const increaseBtnHandler = (e) => {};
 
     return (
         <tr>
             <td className="border-b-[1px] border-gray px-4 py-2 mx-10">
-                <img src={photo} alt="title" className="w-16" />
+                <img src={thumbnail} alt="title" className="w-16" />
             </td>
             <td className="border-b-[1px] border-gray px-4 py-2">
                 <h4 className="uppercase text-base text-green-400 font-medium">

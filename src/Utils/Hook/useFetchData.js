@@ -6,8 +6,8 @@ const useFetchData = (URL) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState({ status: false, message: "" });
 
-    const getBlog = async () => {
-        const url = `http://localhost:2000/api/v1/blog/${URL}`;
+    const getData = async () => {
+        const url = `http://localhost:3001/api/v1/${URL}`;
         try {
             const response = await axios.get(url);
             setData(response.data.result);
@@ -21,7 +21,7 @@ const useFetchData = (URL) => {
     };
 
     useEffect(() => {
-        getBlog();
+        getData();
     }, [URL]);
 
     return [data, loading, error];

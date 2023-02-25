@@ -19,10 +19,10 @@ const AddFoodPage = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        const { title, description, price, thumbURL } = data;
+        const { title, description, price } = data;
 
         // file size and updoading
-        const thumbFile = thumbURL[0];
+        const thumbFile = data?.thumbURL[0];
         if (thumbFile?.name) {
             if (thumbFile.size > 2 && thumbFile.size < 4000000) {
                 setThumbError(false);
@@ -40,7 +40,6 @@ const AddFoodPage = () => {
                     }
                 );
                 const result = await res.json();
-                console.log("result", result?.secure_url);
                 setPrevThumb(result?.secure_url);
                 setThumbLoading(false);
 
@@ -62,8 +61,7 @@ const AddFoodPage = () => {
                         // config
                     );
                     if (response?.data?.status) {
-                        console.log("after success", response);
-                        toast.success("Profile Updated");
+                        toast.success(response?.data?.message);
                     }
                     reset();
                 } catch (error) {
@@ -147,7 +145,7 @@ const AddFoodPage = () => {
                             {...register("description", {
                                 required: "a description is required",
                                 minLength: {
-                                    value: 5,
+                                    value: 50,
                                     message:
                                         "description be atleast 50 characters",
                                 },
@@ -243,7 +241,7 @@ const AddFoodPage = () => {
                 </form>
                 {/* preview */}
                 {thumbLoading ? (
-                    <div className="w-full max-w-[300px] mx-auto text-center text-lg font-semibold text-white">
+                    <div className="w-full max-w-[300px] mx-auto text-center text-lg font-semibold text-green-200">
                         Loading...
                     </div>
                 ) : (

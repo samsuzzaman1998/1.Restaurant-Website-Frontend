@@ -21,7 +21,7 @@ export const SidebarMenuData = [
     },
     {
         _id: 5,
-        name: "one",
-        link: "unknown",
+        name: "food list",
+        link: "/dashboard/foodList",
     },
 ];

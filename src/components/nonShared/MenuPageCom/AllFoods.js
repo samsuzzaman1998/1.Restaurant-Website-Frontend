@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Card from "../../shared/Card";
 import SectionTitle from "../../shared/SecTitle";
-import { foodData } from "../../../database/HomePageData";
 import { AiOutlineSearch } from "react-icons/ai";
+import useFetchData from "../../../Utils/Hook/useFetchData";
+import Loading from "../../shared/Loading";
 
 const AllFoods = () => {
     const secData = {
@@ -11,7 +12,12 @@ const AllFoods = () => {
             "Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, saepe",
     };
 
-    // const [foodData, setFoodData] = useState(foodData);
+    const [foods, loading, error] = useFetchData("food/get-foods");
+
+    if (loading) {
+        return <Loading />;
+    }
+
     return (
         <section className="w-full max-w-7xl mx-auto px-3 xs:px-5 sm:px-8 md:px-8 xl:px-0 my-16">
             <SectionTitle title={secData.title} subtitle={secData.subtitle} />
@@ -33,7 +39,7 @@ const AllFoods = () => {
             </form>
 
             <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-12">
-                {foodData.map((food) => {
+                {foods?.map((food) => {
                     return <Card food={food} key={food._id} />;
                 })}
             </div>
