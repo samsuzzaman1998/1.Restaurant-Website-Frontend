@@ -1,52 +1,71 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Loading from "../../components/shared/Loading";
+import { toast } from "react-toastify";
+import { useQuery } from "react-query";
 
 const UserListPage = () => {
-    const [users, setUsers] = useState({
-        avatar: "",
-        email: "",
-        name: "",
-        role: "",
-        location: "",
-        contact: "",
-    });
-    const [userLoading, setUserLoading] = useState(true);
-    const [userError, setUserError] = useState(false);
     const token = localStorage.getItem("access-token");
 
-    const getMeHandler = async () => {
+    const {
+        isLoading,
+        isError,
+        data: users,
+        error,
+        refetch,
+    } = useQuery("allUsers", () =>
+        fetch("http://localhost:3001/api/v1/user/get-all-user", {
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        }).then((response) => response.json())
+    );
+
+    const handleMakeAdminBtn2 = async (email) => {
         try {
-            if (token) {
-                const config = {
-                    headers: { authorization: `Bearerr ${token}` },
-                };
-                const response = await axios.get(
-                    "http://localhost:3001/api/v1/user/get-all-user",
-                    config
-                );
-                if (response?.data?.status) {
-                    setUsers(response?.data?.result);
-                    setUserLoading(false);
-                    setUserError(false);
+            // const config = {
+            //     headers: {
+            //         authorization: `Bearer ${token}`,
+            //     },
+            // };
+            const response = await axios.put(
+                `http://localhost:3001/api/v1/user/make-admin/${email}`,
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
                 }
-            } else {
-                setUsers({ status: false });
-                setUserLoading(false);
-                return;
+            );
+            if (response?.data?.status) {
+                refetch();
+                toast("Admin added");
             }
         } catch (error) {
-            const temp = { status: false };
-            setUserLoading(false);
-            setUserError(temp);
+            toast.warn("Admin added failed");
+            console.log(error.message);
         }
     };
 
-    useEffect(() => {
-        getMeHandler();
-    }, [token]);
+    const handleMakeAdminBtn = (email) => {
+        fetch(`http://localhost:3001/api/v1/user/make-admin/${email}`, {
+            method: "PUT",
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                refetch();
+                toast.success("Admin added");
+            })
+            .catch((err) => {
+                toast.err("Admin added failed");
+                console.log(error.message);
+            });
+    };
 
-    if (userLoading) {
+    if (isLoading) {
         return <Loading />;
     }
     return (
@@ -64,7 +83,7 @@ const UserListPage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users?.map((user, index) => {
+                        {users?.result?.map((user, index) => {
                             return (
                                 <tr key={user._id}>
                                     <th>{index + 1}</th>
@@ -84,9 +103,18 @@ const UserListPage = () => {
                                     <td>{user?.email}</td>
                                     <td className="capitalize">{user?.role}</td>
                                     <td>
-                                        <button className="capitalize text-xs tracking-wide text-white bg-green-100 px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-green-400 mr-[4px]">
-                                            admin
-                                        </button>
+                                        {user?.role !== "ADMIN" && (
+                                            <button
+                                                onClick={() =>
+                                                    handleMakeAdminBtn(
+                                                        user?.email
+                                                    )
+                                                }
+                                                className="capitalize text-xs tracking-wide text-white bg-green-100 px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-green-400 mr-[4px]"
+                                            >
+                                                admin
+                                            </button>
+                                        )}
                                         <button className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80">
                                             remove
                                         </button>

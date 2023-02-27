@@ -25,7 +25,7 @@ const UserContextProviderWrapper = ({ children }) => {
         try {
             if (token) {
                 const config = {
-                    headers: { authorization: `Bearerr ${token}` },
+                    headers: { authorization: `Bearer ${token}` },
                 };
                 const response = await axios.get(
                     "http://localhost:3001/api/v1/user/get-user",

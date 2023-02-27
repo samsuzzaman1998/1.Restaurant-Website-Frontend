@@ -90,7 +90,7 @@ const LoginPage = () => {
                             type="text"
                             placeholder="email"
                             id="email"
-                            className="w-full px-2 py-1 text-green-500 capitalize border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1"
+                            className="w-full px-2 py-1 text-green-500 border border-gray rounded-md outline-none focus:border-green-100 transition-all duration-200 text-[14px] mt-1"
                             {...register("email", {
                                 required: "email is required",
                                 pattern: {
