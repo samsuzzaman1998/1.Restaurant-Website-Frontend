@@ -1,11 +1,19 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../components/shared/Loading";
 import { toast } from "react-toastify";
 import { useQuery } from "react-query";
+import { userContext } from "../../Utils/Context/userContext";
 
 const UserListPage = () => {
     const token = localStorage.getItem("access-token");
+    const {
+        user: logedInUser,
+        userError,
+        userLoading,
+        userLogout,
+        handleLoginToken,
+    } = useContext(userContext); // custom user
 
     const {
         isLoading,
@@ -116,16 +124,18 @@ const UserListPage = () => {
                                                 admin
                                             </button>
                                         )}
-                                        <button
-                                            onClick={() =>
-                                                handleRemoveAdminBtn(
-                                                    user?.email
-                                                )
-                                            }
-                                            className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80"
-                                        >
-                                            remove
-                                        </button>
+                                        {user?.email !== logedInUser?.email && (
+                                            <button
+                                                onClick={() =>
+                                                    handleRemoveAdminBtn(
+                                                        user?.email
+                                                    )
+                                                }
+                                                className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80"
+                                            >
+                                                remove
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             );
