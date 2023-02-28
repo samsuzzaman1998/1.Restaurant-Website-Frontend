@@ -22,31 +22,6 @@ const UserListPage = () => {
         }).then((response) => response.json())
     );
 
-    const handleMakeAdminBtn2 = async (email) => {
-        try {
-            // const config = {
-            //     headers: {
-            //         authorization: `Bearer ${token}`,
-            //     },
-            // };
-            const response = await axios.put(
-                `http://localhost:3001/api/v1/user/make-admin/${email}`,
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            if (response?.data?.status) {
-                refetch();
-                toast("Admin added");
-            }
-        } catch (error) {
-            toast.warn("Admin added failed");
-            console.log(error.message);
-        }
-    };
-
     const handleMakeAdminBtn = (email) => {
         fetch(`http://localhost:3001/api/v1/user/make-admin/${email}`, {
             method: "PUT",
@@ -56,12 +31,16 @@ const UserListPage = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                refetch();
-                toast.success("Admin added");
+                if (data?.status) {
+                    refetch();
+                    toast.success("Admin added");
+                } else {
+                    toast.error("Not eligible");
+                }
             })
             .catch((err) => {
-                toast.err("Admin added failed");
-                console.log(error.message);
+                toast.error("Admin added failed");
+                console.log(err);
             });
     };
 

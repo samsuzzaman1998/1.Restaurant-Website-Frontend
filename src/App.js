@@ -22,6 +22,7 @@ import FoodFunToast from "./components/shared/FoodFunToast";
 import UserListPage from "./pages/DashboardPages/UserListPage";
 import AddFoodPage from "./pages/DashboardPages/AddFoodPage";
 import FoodListPage from "./pages/DashboardPages/FoodListPage";
+import RequireAdmin from "./components/shared/RequireAdmin";
 
 function App() {
     return (
@@ -45,7 +46,14 @@ function App() {
                 >
                     <Route path="profile" element={<UserProfilePage />} />
                     <Route path="orderList" element={<UserOrderListPage />} />
-                    <Route path="userList" element={<UserListPage />} />
+                    <Route
+                        path="userList"
+                        element={
+                            <RequireAdmin>
+                                <UserListPage />
+                            </RequireAdmin>
+                        }
+                    />
                     <Route path="addFood" element={<AddFoodPage />} />
                     <Route path="foodList" element={<FoodListPage />} />
                 </Route>
