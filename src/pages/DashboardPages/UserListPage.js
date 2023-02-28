@@ -44,6 +44,28 @@ const UserListPage = () => {
             });
     };
 
+    const handleRemoveAdminBtn = (email) => {
+        fetch(`http://localhost:3001/api/v1/user/remove-admin/${email}`, {
+            method: "PUT",
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data?.status) {
+                    refetch();
+                    toast.success("Removed from Admin");
+                } else {
+                    toast.error("Failed");
+                }
+            })
+            .catch((err) => {
+                toast.error("Something Wrong");
+                console.log(err);
+            });
+    };
+
     if (isLoading) {
         return <Loading />;
     }
@@ -94,7 +116,14 @@ const UserListPage = () => {
                                                 admin
                                             </button>
                                         )}
-                                        <button className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80">
+                                        <button
+                                            onClick={() =>
+                                                handleRemoveAdminBtn(
+                                                    user?.email
+                                                )
+                                            }
+                                            className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80"
+                                        >
                                             remove
                                         </button>
                                     </td>

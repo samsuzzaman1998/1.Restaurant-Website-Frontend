@@ -20,13 +20,10 @@ const useCheckAdmin = (user) => {
                 .then((data) => {
                     if (data?.status) {
                         setAdminLoading(false);
-                        toast.success("Yes,You are admin");
-                        console.log(data);
                         setIsAdmin(data?.status);
                     } else {
                         setAdminLoading(false);
                         setIsAdmin(false);
-                        toast.error("No, You a't an admin");
                     }
                 })
                 .catch((err) => {
