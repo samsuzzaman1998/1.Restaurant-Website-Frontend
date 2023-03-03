@@ -12,6 +12,7 @@
 /build
 
 # misc
+foodData.json
 .env
 .DS_Store
 .env.local

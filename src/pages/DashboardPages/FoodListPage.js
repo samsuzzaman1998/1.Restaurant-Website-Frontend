@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import Loading from "../../components/shared/Loading";
 import useFetchData from "../../Utils/Hook/useFetchData";
 import { toast } from "react-toastify";
+import DeleteFoodModal from "../../components/nonShared/DashboardPageCom/DeleteFoodModal";
+import axios from "axios";
 
 const FoodListPage = () => {
-    const [foods, loading, error] = useFetchData("food/get-foods");
+    const [foods, loading, error, refetch] = useFetchData("food/get-foods");
+    const [deletedFoodID, setDeletedFoodID] = useState("");
+
+    const handleDeleteProcess = (response) => {
+        if (response) {
+            const url = `http://localhost:3001/api/v1/food/delete-food/${deletedFoodID}`;
+            axios
+                .delete(url, {
+                    headers: {
+                        authorization: `Bearer ${localStorage.getItem(
+                            "access-token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                    refetch();
+                    // inform
+                    res?.status &&
+                        toast.success("Deleted", { position: "top-center" });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            return;
+        }
+    };
 
     if (loading) {
         return <Loading />;
@@ -48,12 +77,22 @@ const FoodListPage = () => {
                                         {food?.price}
                                     </td>
                                     <td>
-                                        <button className="capitalize text-xs tracking-wide text-white bg-green-100 px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-green-400 mr-[4px]">
-                                            update
-                                        </button>
-                                        <button className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80">
-                                            delete
-                                        </button>
+                                        <label
+                                            htmlFor="update_food_modal"
+                                            className="capitalize text-xs tracking-wide text-white bg-green-100 px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-green-400 mr-[4px] cursor-pointer"
+                                        >
+                                            Update
+                                        </label>
+
+                                        <label
+                                            onClick={() =>
+                                                setDeletedFoodID(food?._id)
+                                            }
+                                            htmlFor="delete_food_modal"
+                                            className="capitalize text-xs tracking-wide text-white bg-red px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-opacity-80 cursor-pointer"
+                                        >
+                                            Delete
+                                        </label>
                                     </td>
                                 </tr>
                             );
@@ -61,6 +100,8 @@ const FoodListPage = () => {
                     </tbody>
                 </table>
             </div>
+
+            <DeleteFoodModal handleDeleteProcess={handleDeleteProcess} />
         </section>
     );
 };
