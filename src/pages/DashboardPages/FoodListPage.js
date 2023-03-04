@@ -4,10 +4,18 @@ import useFetchData from "../../Utils/Hook/useFetchData";
 import { toast } from "react-toastify";
 import DeleteFoodModal from "../../components/nonShared/DashboardPageCom/DeleteFoodModal";
 import axios from "axios";
+import UpdateFoodModal from "../../components/nonShared/DashboardPageCom/UpdateFoodModal";
 
 const FoodListPage = () => {
     const [foods, loading, error, refetch] = useFetchData("food/get-foods");
     const [deletedFoodID, setDeletedFoodID] = useState("");
+    const [updateFood, setUpdateFood] = useState({});
+    const [showUpdateFoodModal, setShowUpdateFoodModal] = useState(false);
+
+    const handleUpdateFood = (food) => {
+        setUpdateFood(food);
+        setShowUpdateFoodModal(true);
+    };
 
     const handleDeleteProcess = (response) => {
         if (response) {
@@ -78,6 +86,9 @@ const FoodListPage = () => {
                                     </td>
                                     <td>
                                         <label
+                                            onClick={() =>
+                                                handleUpdateFood(food)
+                                            }
                                             htmlFor="update_food_modal"
                                             className="capitalize text-xs tracking-wide text-white bg-green-100 px-2     py-[2px] rounded-xl transition-all duration-300 hover:bg-green-400 mr-[4px] cursor-pointer"
                                         >
@@ -100,7 +111,13 @@ const FoodListPage = () => {
                     </tbody>
                 </table>
             </div>
-
+            {showUpdateFoodModal && (
+                <UpdateFoodModal
+                    food={updateFood}
+                    setShowUpdateFoodModal={setShowUpdateFoodModal}
+                    refetch={refetch}
+                />
+            )}
             <DeleteFoodModal handleDeleteProcess={handleDeleteProcess} />
         </section>
     );
